@@ -17,7 +17,7 @@ var TODO_MODULE = (function () {
         button.onclick = function () {
             taskName = form.elements.task_name;
             deadline = form.elements.deadline;
-            addTask(Tasks, createNewTask(taskName.value, deadline.value));
+            addTask(createNewTask(taskName.value, deadline.value), Tasks);
             render(Tasks);
             taskName.value = "";
             deadline.value = "";
@@ -50,6 +50,8 @@ var TODO_MODULE = (function () {
         });
         this.__defineSetter__("deadline", function (date) {
             deadline = new Date(date);
+            if (!dateToString(deadline))
+                deadline = null;
         });
         this.__defineGetter__("deadline", function () {
             return deadline;
@@ -62,7 +64,7 @@ var TODO_MODULE = (function () {
         }
     }
 
-    function dateToString(date) {
+    var dateToString = function (date) {
         var dd = date.getDate();
         var mm = date.getMonth() + 1;
         var yyyy = date.getFullYear();
@@ -76,8 +78,11 @@ var TODO_MODULE = (function () {
             hours = '0' + hours;
         if (minutes < 10)
             minutes = '0' + minutes;
+        if (isNaN(dd) || isNaN(mm) || isNaN(yyyy) || isNaN(hours) || isNaN(minutes))
+            return false;
         return dd + '/' + mm + '/' + yyyy + '  ' + hours + ':' + minutes;
-    }
+
+    };
 
     function setCurrentId() {
         var currentId = 0;
@@ -95,52 +100,52 @@ var TODO_MODULE = (function () {
         return newTask;
     };
 
-    var addTask = function (container, task) {
+    var addTask = function (task, taskArray) {
         if (task instanceof Task)
-            container.push(task);
+            taskArray.push(task);
     };
 
-    function deleteTask(container, task) {
-        var id = container.indexOf(task);
-        container.splice(id, 1);
-    }
+    var deleteTask = function (task, taskArray) {
+        var id = taskArray.indexOf(task);
+        taskArray.splice(id, 1);
+    };
 
-    function render(tasks) {
+    var render = function (tasks) {
         removeAllListElements();
         for (let i = 0; i < tasks.length; i++) {
             renderTaskComponent(tasks[i], tasks);
         }
-    }
+    };
 
-    function removeAllListElements() {
+    var removeAllListElements = function () {
         var liList = ul.querySelectorAll("li");
         for (let i = 0; i < liList.length; i++) {
             ul.removeChild(liList[i]);
         }
-    }
+    };
 
-    function renderTaskComponent(task, tasksArray) {
+    var renderTaskComponent = function (task, taskArray) {
         var label = createLabelElement(task);
         var li = document.createElement("li");
-        var button = createDeleteButton(task, tasksArray);
+        var button = createDeleteButton(task, taskArray);
         li.className = "task";
         li.appendChild(label);
         li.appendChild(button);
         ul.appendChild(li);
-    }
+    };
 
-    function createDeleteButton(task, tasksArray) {
+    var createDeleteButton = function (task, taskArray) {
         var button = document.createElement("button");
         button.type = "button";
         button.className = "delete-task-button";
         button.onclick = function () {
-            deleteTask(tasksArray, task);
-            render(tasksArray);
+            deleteTask(task, taskArray);
+            render(taskArray);
         };
         return button;
-    }
+    };
 
-    function createLabelElement(task) {
+    var createLabelElement = function (task) {
         var checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.name = "is_task_done";
@@ -158,7 +163,7 @@ var TODO_MODULE = (function () {
             }
         };
         return label;
-    }
+    };
 
     return {
         init: init
