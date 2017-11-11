@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>todo</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="todo-module">
+    <!Здесь будет располагаться компонент TODO-list>
+    <form class="input-form" method="post">
+        <label>Enter a title of a task:<br>
+            <input type="text" name="task_name" size="40">
+        </label>
+        <br>
+        <label>Enter a deadline (MM/DD/YYYY [HH:MM]):<br>
+            <input type="date" name="deadline" />
+        </label>
+        <button type="button" class="add-task-button">Add the task</button>
+    </form>
+</div>
+<script src="todo-list.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

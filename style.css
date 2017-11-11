@@ -1,0 +1,37 @@
+.list-of-tasks {
+    list-style-type: none;
+}
+
+.input-form {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+label {
+    margin: 15px;
+    text-decoration: none;
+}
+
+.doneTask {
+    text-decoration: line-through;
+}
+
+.delete-task-button{
+    background: url("delete-icon.png");
+    border: 0;
+    font-size: 0;
+    width: 16px;
+    height: 16px;
+}
+
+
+
+.list-of-tasks li{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 30px;
+}
